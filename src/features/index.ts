@@ -1,0 +1,1 @@
+export {DashboardListComponent as DashboardList} from './dashboard-list/dashboard-list-component';
