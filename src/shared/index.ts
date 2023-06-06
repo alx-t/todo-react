@@ -1,0 +1,1 @@
+export {EditableSpanComponent as EditableSpan} from './ui/editable-span/editable-span-component';
