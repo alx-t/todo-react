@@ -5,10 +5,32 @@ export interface IDashboard {
   order: number;
 }
 
-export interface IDashboardData {
+export interface IResponseData<T = {}> {
   resultCode: number,
   messages: string[],
-  data: {
-    item: IDashboard
-  }
+  data: T
+}
+
+export interface IDashboardData {
+  item: IDashboard
+}
+
+export interface IGetTasksData {
+  items: ITask[],
+  totalCount: number,
+  error: string | null
+}
+
+export interface ITask {
+  description: string
+  title: string
+  completed: boolean
+  status: number
+  priority: number
+  startDate: string
+  deadline: string
+  id: string
+  todoListId: string
+  order: number
+  addedDate: string
 }

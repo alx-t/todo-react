@@ -1,11 +1,12 @@
 import {createSlice} from '@reduxjs/toolkit';
 import type {PayloadAction} from '@reduxjs/toolkit';
-import { IInitState } from './dashboard-list-types';
-import { IDashboard } from '../../shared/types/types';
+import { IInitState } from '../../ui/dashboard-list/dashboard-list-types';
+import { IDashboard, ITask } from '../../../shared/types/types';
+import { ISetTasksData } from './dashboard-types';
 
 export const initialState: IInitState = {
   dashboardList: [],
-  editedId: ''
+  tasks: {}
 };
 
 export const DashboardSlice = createSlice({
@@ -15,15 +16,15 @@ export const DashboardSlice = createSlice({
       setDashboardList: (state, action: PayloadAction<IDashboard[]>) => {
         state.dashboardList = action.payload
       },
-      setEditedId: (state, action: PayloadAction<string>) => {
-        state.editedId = action.payload
+      setTasksForDashboard: (state, action: PayloadAction<ISetTasksData>) => {
+        state.tasks[action.payload.dashboardId] = action.payload.tasks
       }
     }
 });
 
 export const {
   setDashboardList,
-  setEditedId
+  setTasksForDashboard,
 } = DashboardSlice.actions;
 
 export const DasboardSliceReducer = DashboardSlice.reducer;

@@ -2,7 +2,7 @@ import { Action, ThunkAction, combineReducers, configureStore } from "@reduxjs/t
 import { CounterSliceReducer } from "../entities/ui/counter/counter-slice";
 import { EasyCounterSliceReducer } from "../entities/ui/easy-counter/easy-counter-slice";
 import { HardCounterSliceReducer } from "../entities/ui/hard-counter/hard-counter-slice";
-import { DasboardSliceReducer } from "../features/dashboard-list/dashboard-list-slice";
+import { DasboardSliceReducer } from "../features/model/dashboard/dashboard-slice";
 
 const rootReducer = combineReducers({
   counter: CounterSliceReducer,
