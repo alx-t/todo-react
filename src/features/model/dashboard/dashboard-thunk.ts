@@ -1,6 +1,6 @@
 import { AppThunk } from "../../../store/store";
 import { dashboardApi } from "../../api/dashboard/dashboard-api"
-import { setDashboardList, setTasksForDashboard } from "./dashboard-slice";
+import { removeDashboardTasks, setDashboardList, setTasksForDashboard } from "./dashboard-slice";
 
 export const getDashbordListTC = (): AppThunk => async (dispatch) => {
   try {
@@ -29,6 +29,7 @@ export const deleteDashboardTC = (id: string): AppThunk => async (dispatch) => {
     const res = await dashboardApi.deleteDashboard(id);
     if (res.data.resultCode === 0) {
       dispatch(getDashbordListTC())
+      dispatch(removeDashboardTasks(id))
     } else {
       alert(res.data.messages[0])
     }
@@ -78,6 +79,19 @@ export const createTaskForDashboardTC = (dashboardId: string, title: string): Ap
 export const deleteTaskForDashboardTC = (dashboardId: string, taskId: string): AppThunk => async (dispatch) => {
   try {
     const res = await dashboardApi.deleteTask(dashboardId, taskId);
+    if (res.data.resultCode === 0) {
+      dispatch(getTasksForDashboardTC(dashboardId))
+    } else {
+      alert(res.data.messages[0])
+    }
+  } catch (error) {
+    alert(error)
+  }
+}
+
+export const updateTaskTC = (dashboardId: string, taskId: string, title: string, status: boolean): AppThunk => async (dispatch) => {
+  try {
+    const res = await dashboardApi.updateTask(dashboardId, taskId, title, status);
     if (res.data.resultCode === 0) {
       dispatch(getTasksForDashboardTC(dashboardId))
     } else {

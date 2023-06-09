@@ -25,7 +25,7 @@ export interface ITask {
   description: string
   title: string
   completed: boolean
-  status: number
+  status: boolean
   priority: number
   startDate: string
   deadline: string

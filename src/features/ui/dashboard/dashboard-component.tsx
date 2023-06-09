@@ -1,37 +1,24 @@
-import React, { ChangeEvent, FC, useState, useEffect } from 'react';
-import {format} from 'date-fns';
+import React, { FC, memo } from 'react';
 
-import { useAppDispatch, useAppSelector } from '../../../shared/hooks/hooks';
-import { createTaskForDashboardTC, deleteDashboardTC, deleteTaskForDashboardTC, getTasksForDashboardTC, updateTitleDashboardTC } from '../../model/dashboard/dashboard-thunk';
+import { formatRelative, subDays} from 'date-fns'
+import { enGB } from 'date-fns/locale';
+
+import { useAppDispatch } from '../../../shared/hooks/hooks';
+import { deleteDashboardTC, updateTitleDashboardTC } from '../../model/dashboard/dashboard-thunk';
 import { EditableSpan } from '../../../shared';
 import { IDashboardProps } from './dashboard-types';
-import { getTasksList } from '../../model/dashboard/dashboard-selectors';
+import { TaskList } from '../..';
 
-export const DashboardComponent: FC<IDashboardProps> = ({id, title, addedDate}) => {
+import {IconButton, Title, Space, Panel} from '@shturval/takelage-ui';
+import {Divider} from 'antd';
+
+export const DashboardComponent: FC<IDashboardProps> = memo(({id, title, addedDate}) => {
   const dispath = useAppDispatch()
-  const allTasksList = useAppSelector(getTasksList)
-  const taskList = allTasksList[id] ?? []
-  const [newTitle, setNewTitle] = useState('')
 
-  useEffect(() => {
-    dispath(getTasksForDashboardTC(id))
-  }, [dispath])
-
-  const taskListUi = taskList.map((task) => {
-    const handleDeleteTask = () =>{
-      dispath(deleteTaskForDashboardTC(id, task.id))
-    }
-
-    return (
-      <div>
-        <span>{task.title}</span>
-        <input type="checkbox" checked={task.completed} />
-        <button onClick={handleDeleteTask}>Delete</button>
-      </div>
-    )
+  // const date = format(new Date(addedDate), 'yy-MM-dd')
+  const date = formatRelative(subDays(new Date(addedDate), 0), new Date(), {
+    locale: enGB
   })
-
-  const date = format(new Date(2014,1,14), 'yy-MM-dd')
 
   const handleDeleteDashboard = () =>{
     dispath(deleteDashboardTC(id))
@@ -41,31 +28,18 @@ export const DashboardComponent: FC<IDashboardProps> = ({id, title, addedDate}) 
     dispath(updateTitleDashboardTC(id, value))
   }
 
-  const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
-    setNewTitle(event.currentTarget.value)
-  };
-
-  const handleCreateTask = () => {
-    dispath(createTaskForDashboardTC(id, newTitle))
-    setNewTitle('')
-  };
-
   return (
-    <div>
-      <h4>
-        <EditableSpan onUpdateValue={onUpdateValue}>{title}</EditableSpan>
-        <button onClick={handleDeleteDashboard}>Delete</button>
-      </h4>
+    <Panel>
+      <Title>
+        <Space align={'center'} size={'small'}>
+          <IconButton onClick={handleDeleteDashboard} title='Delete' iconName={'delete'} variant={'link'} />
+          <EditableSpan onUpdateValue={onUpdateValue}>{title}</EditableSpan>
+        </Space>
+      </Title>
 
-      <div>
-        <div>
-          <input type='text' value={newTitle} onChange={handleChangeTitle}/>
-          <button onClick={handleCreateTask}>Add Task</button>
-        </div>
-        Tasks: {taskListUi}
-      </div>
-
+      <TaskList id={id} />
+      <Divider />
       <div>Created: {date}</div>
-  </div>
+  </Panel>
   )
-}
+})

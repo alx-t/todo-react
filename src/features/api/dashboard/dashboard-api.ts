@@ -1,6 +1,6 @@
 import { axiosInstance } from "../../../shared/api/axios"
 
-import { IResponseData, IDashboardData, IDashboard, IGetTasksData } from "../../../shared/types/types"
+import { IDashboard, IDashboardData, IGetTasksData, IResponseData } from "../../../shared/types/types"
 
 export const dashboardApi = {
   /**
@@ -49,4 +49,14 @@ export const dashboardApi = {
    * @param taskId 
    */
   deleteTask: (dashboardId: string, taskId: string) => axiosInstance.delete(`/todo-lists/${dashboardId}/tasks/${taskId}`),
+
+  /**
+   * Update task title
+   * @param dashboardId 
+   * @param taskId 
+   * @param title 
+   * @param status 
+   */
+  updateTask: (dashboardId: string, taskId: string, title: string, status: boolean) => 
+    axiosInstance.put(`/todo-lists/${dashboardId}/tasks/${taskId}`, {title, status}),
 }
