@@ -3,12 +3,14 @@ import { CounterSliceReducer } from "../entities/ui/counter/counter-slice";
 import { EasyCounterSliceReducer } from "../entities/ui/easy-counter/easy-counter-slice";
 import { HardCounterSliceReducer } from "../entities/ui/hard-counter/hard-counter-slice";
 import { DasboardSliceReducer } from "../features/model/dashboard/dashboard-slice";
+import { AuthSliceReducer } from "src/features/model/auth/auth-slice";
 
 const rootReducer = combineReducers({
   counter: CounterSliceReducer,
   easyCounter: EasyCounterSliceReducer,
   hardCounter: HardCounterSliceReducer,
-  dashboard: DasboardSliceReducer
+  dashboard: DasboardSliceReducer,
+  auth: AuthSliceReducer
 })
 
 export const store = configureStore({
